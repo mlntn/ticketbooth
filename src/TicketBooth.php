@@ -25,6 +25,8 @@ class TicketBooth
         $this->path = $path;
         $this->file = $file;
         $this->time_limit = $time_limit;
+
+        register_shutdown_function([ $this, 'release']);
     }
 
     /**
@@ -33,7 +35,7 @@ class TicketBooth
     public function claim()
     {
         if ($this->check()) {
-            $this->renew();
+            $this->touch();
         }
         else {
             throw new TicketException("Another process has the ticket right now");
@@ -42,12 +44,47 @@ class TicketBooth
 
     public function renew()
     {
-        touch($this->getFilePath());
+        if ($this->checkPid()) {
+            $this->touch();
+        }
+        else {
+            throw new TicketException("Another process has the ticket right now");
+        }
+    }
+
+    protected function touch()
+    {
+        $this->setPid();
     }
 
     public function release()
     {
         unlink($this->getFilePath());
+    }
+
+    protected function checkPid()
+    {
+        return $this->getPid() == getmypid();
+    }
+
+    protected function getPid()
+    {
+        $h = fopen($this->getFilePath(), 'r');
+
+        $pid = fread($h, 16);
+
+        fclose($h);
+
+        return (int) $pid;
+    }
+
+    protected function setPid()
+    {
+        $h = fopen($this->getFilePath(), 'w');
+
+        fwrite($h, getmypid());
+
+        fclose($h);
     }
 
     /**
@@ -81,4 +118,3 @@ class TicketBooth
     }
 
 }
-
