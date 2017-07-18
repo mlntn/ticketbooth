@@ -1,0 +1,18 @@
+{
+  "name": "mlntn/ticketbooth",
+  "type": "library",
+  "description": "A simple locking mechanism for cron jobs and other scripts",
+  "keywords": ["cron","lock"],
+  "homepage": "http://github.com/mlntn/ticketbooth",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jared Mellentine",
+      "email": "jared@mellentine.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "classmap": ["src/"]
+  }
+}
