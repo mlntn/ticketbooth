@@ -45,6 +45,11 @@ class TicketBooth
         touch($this->getFilePath());
     }
 
+    public function release()
+    {
+        unlink($this->getFilePath());
+    }
+
     /**
      * @return bool
      */
@@ -76,3 +81,4 @@ class TicketBooth
     }
 
 }
+

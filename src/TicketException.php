@@ -2,7 +2,7 @@
 
 namespace Mlntn;
 
-class TicketException extends Exception
+class TicketException extends \Exception
 {
 
 }
