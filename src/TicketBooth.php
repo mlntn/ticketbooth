@@ -25,8 +25,6 @@ class TicketBooth
         $this->path = $path;
         $this->file = $file;
         $this->time_limit = $time_limit;
-
-        register_shutdown_function([ $this, 'release']);
     }
 
     /**
@@ -36,6 +34,8 @@ class TicketBooth
     {
         if ($this->check()) {
             $this->touch();
+
+            register_shutdown_function([ $this, 'release']);
         }
         else {
             throw new TicketException("Another process has the ticket right now");
